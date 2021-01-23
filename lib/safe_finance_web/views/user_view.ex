@@ -3,17 +3,23 @@ defmodule SafeFinanceWeb.UserView do
   alias SafeFinanceWeb.UserView
 
   def render("index.json", %{users: users}) do
-    %{data: render_many(users, UserView, "user.json")}
+    %{data: render_many(users, UserView, "account.json")}
   end
 
   def render("show.json", %{user: user}) do
     %{data: render_one(user, UserView, "user.json")}
   end
 
-  def render("user.json", %{user: user}) do
-    %{id: user.id,
-      name: user.name,
-      email: user.email,
-      password: user.password}
+  def render("account.json", %{account: account}) do
+    %{
+      balance: account.balance,
+      currency: account.currency,
+      user: %{
+        id: account.user.id,
+        name: account.user.name,
+        email: account.user.email,
+        password: account.user.password,
+      }
+    }
   end
 end

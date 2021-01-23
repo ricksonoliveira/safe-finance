@@ -1,5 +1,7 @@
-
 defmodule SafeFinance.Accounts.User do
+  @moduledoc """
+    User Schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,9 +13,15 @@ defmodule SafeFinance.Accounts.User do
     field :password, :string, virtual: true
     field :password_hash, :string
 
+    has_one :user_finances, SafeFinance.Accounts.UserFinances
+
     timestamps()
   end
 
+  @spec changeset(
+          {map, map} | %{:__struct__ => atom | %{__changeset__: map}, optional(atom) => any},
+          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}
+        ) :: Ecto.Changeset.t()
   @doc false
   def changeset(user, attrs) do
     user
@@ -33,7 +41,7 @@ defmodule SafeFinance.Accounts.User do
   defp hash_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, Argon2.add_hash(password))
   end
- 
+
   defp hash_password(changeset) do
     changeset
   end

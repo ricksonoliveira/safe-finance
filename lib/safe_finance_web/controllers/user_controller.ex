@@ -1,23 +1,29 @@
 defmodule SafeFinanceWeb.UserController do
+  @moduledoc """
+    Controller responsavel pelas ações do usuário
+  """
   use SafeFinanceWeb, :controller
 
   alias SafeFinance.Accounts
-  alias SafeFinance.Accounts.User
 
   action_fallback SafeFinanceWeb.FallbackController
 
-  def index(conn, _params) do
-    users = Accounts.list_users()
-    render(conn, "index.json", users: users)
+  @doc """
+    Lista todos os usuários no banco de dados
+  """
+  def index(conn, _) do
+    conn
+    |> render("index.json", users: Accounts.get_users())
   end
 
+  @doc """
+    Cria um usuário no banco de dados
+  """
   def signup(conn, %{"user" => user}) do
-    with {:ok, %User{} = user, account} <- Accounts.create_user(user) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.user_path(conn, :show, user.id))
-      |> render("account.json", %{user: user, account: account})
-    end
+    {:ok, account} = Accounts.create_user(user)
+    conn
+    |> put_status(:created)
+    |> render("account.json", %{user: user, account: account})
   end
 
   def show(conn, %{"id" => id}) do

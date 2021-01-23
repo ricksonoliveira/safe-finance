@@ -6,7 +6,7 @@ defmodule SafeFinance.Accounts do
   import Ecto.Query, warn: false
   alias SafeFinance.Repo
 
-  alias SafeFinance.Accounts.User
+  alias SafeFinance.Accounts.{UserFinances, User}
 
   @doc """
   Returns the list of users.
@@ -38,67 +38,37 @@ defmodule SafeFinance.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
-  Creates a user.
+    Cria um usuário no banco
+  """
+  def create_user(attrs \\ %{}) do
+    case insert_user(attrs) do
+      {:ok, user} ->
+        {:ok, account} = user
+        |> Ecto.build_assoc(:user_finances)
+        |> UserFinances.changeset()
+        |> Repo.insert()
+        {:ok, account |> Repo.preload(:user)}
+        {:error, changeset} -> {:error, changeset}
+    end
+  end
+
+  @doc """
+  Insert de um usuário.
 
   ## Examples
 
-      iex> create_user(%{field: value})
+      iex> inser_user(%{field: value})
       {:ok, %User{}}
 
-      iex> create_user(%{field: bad_value})
+      iex> inser_user(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_user(attrs \\ %{}) do
+  def insert_user(attrs) do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a user.
-
-  ## Examples
-
-      iex> update_user(user, %{field: new_value})
-      {:ok, %User{}}
-
-      iex> update_user(user, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a user.
-
-  ## Examples
-
-      iex> delete_user(user)
-      {:ok, %User{}}
-
-      iex> delete_user(user)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_user(%User{} = user) do
-    Repo.delete(user)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking user changes.
-
-  ## Examples
-
-      iex> change_user(user)
-      %Ecto.Changeset{data: %User{}}
-
-  """
-  def change_user(%User{} = user, attrs \\ %{}) do
-    User.changeset(user, attrs)
-  end
+  def get_users(), do: Repo.all(User) |> Repo.preload(:user_finances)
 end

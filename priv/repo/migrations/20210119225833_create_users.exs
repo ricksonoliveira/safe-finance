@@ -1,7 +1,7 @@
-@moduledoc """
-  Users Table Migration
-"""
 defmodule SafeFinance.Repo.Migrations.CreateUsers do
+  @moduledoc """
+    Migration para criar tabela users
+  """
   use Ecto.Migration
 
   def change do
