@@ -13,17 +13,18 @@ defmodule SafeFinanceWeb.UserController do
   """
   def index(conn, _) do
     conn
-    |> render("index.json", users: Accounts.get_users())
+    |> render("index.json", users: Accounts.list_users())
   end
 
   @doc """
     Cria um usuário no banco de dados
   """
   def signup(conn, %{"user" => user}) do
-    {:ok, account} = Accounts.create_user(user)
-    conn
-    |> put_status(:created)
-    |> render("account.json", %{user: user, account: account})
+    with {:ok, user, user_finances} <- Accounts.create_user(user) do
+      conn
+      |> put_status(:created)
+      |> render("account.json", %{user: user, account: user_finances})
+    end
   end
 
   def show(conn, %{"id" => id}) do

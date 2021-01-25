@@ -18,7 +18,7 @@ defmodule SafeFinance.Accounts do
 
   """
   def list_users do
-    Repo.all(User)
+    Repo.all(User) |> Repo.preload(:user_finances)
   end
 
   @doc """
@@ -38,17 +38,22 @@ defmodule SafeFinance.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
-    Cria um usuário no banco
+    Cria um usuário no banco com transações segura de banco de dados
   """
   def create_user(attrs \\ %{}) do
-    case insert_user(attrs) do
-      {:ok, user} ->
-        {:ok, account} = user
-        |> Ecto.build_assoc(:user_finances)
-        |> UserFinances.changeset()
-        |> Repo.insert()
-        {:ok, account |> Repo.preload(:user)}
-        {:error, changeset} -> {:error, changeset}
+    transaction =
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:user, insert_user(attrs))
+    |> Ecto.Multi.insert(:account, fn %{user: user} ->
+      user
+       |> Ecto.build_assoc(:user_finances)
+       |> UserFinances.changeset()
+    end)
+    |> Repo.transaction()
+
+    case transaction do
+      {:ok, operations} -> {:ok, operations.user, operations.account}
+      {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
 
@@ -67,7 +72,6 @@ defmodule SafeFinance.Accounts do
   def insert_user(attrs) do
     %User{}
     |> User.changeset(attrs)
-    |> Repo.insert()
   end
 
   def get_users(), do: Repo.all(User) |> Repo.preload(:user_finances)
