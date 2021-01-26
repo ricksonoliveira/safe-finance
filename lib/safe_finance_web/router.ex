@@ -1,4 +1,7 @@
 defmodule SafeFinanceWeb.Router do
+  @moduledoc """
+    Api Routes
+  """
   use SafeFinanceWeb, :router
 
   pipeline :api do
@@ -8,10 +11,12 @@ defmodule SafeFinanceWeb.Router do
   scope "/api", SafeFinanceWeb do
     pipe_through :api
 
+    @doc """
+      User actions routes
+    """
     scope "/users" do
-      
+      get "/show", UserController, :show
       get "/list", UserController, :index
-
       post "/signup", UserController, :signup
       post "/signin", UserController, :signin
     end
