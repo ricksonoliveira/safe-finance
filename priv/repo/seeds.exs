@@ -10,10 +10,8 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-SafeFinance.Accounts.create_user(
-  %{
-    name: "Rick G.",
-    email: "rikson@gmail.com",
-    password: "123456"
-  }
-)
+SafeFinance.Accounts.create_user(%{
+  name: "Rick G.",
+  email: "rikson@gmail.com",
+  password: "123456"
+})

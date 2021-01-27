@@ -5,7 +5,7 @@ defmodule SafeFinance.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key {:id,  :binary_id, autogenerate: true}
+  @primary_key {:id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :id}
   schema "users" do
     field :email, :string
@@ -13,7 +13,7 @@ defmodule SafeFinance.Accounts.User do
     field :password, :string, virtual: true
     field :password_hash, :string
 
-    has_one :user_finances, SafeFinance.Accounts.UserFinances
+    has_one :user_finance, SafeFinance.Accounts.UserFinance
 
     timestamps()
   end

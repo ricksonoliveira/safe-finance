@@ -12,7 +12,7 @@ defmodule SafeFinanceWeb.UserView do
         id: user.id,
         name: user.name,
         email: user.email,
-        password_hash: user.password_hash,
+        password_hash: user.password_hash
       }
     }
   end
@@ -35,9 +35,9 @@ defmodule SafeFinanceWeb.UserView do
       email: user.email,
       password_hash: user.password_hash,
       accounts: %{
-        id: user.user_finances.id,
-        balance: user.user_finances.balance,
-        currency: user.user_finances.currency
+        id: user.user_finance.id,
+        balance: user.user_finance.balance,
+        currency: user.user_finance.currency
       }
     }
   end

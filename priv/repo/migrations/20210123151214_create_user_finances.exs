@@ -13,6 +13,5 @@ defmodule SafeFinance.Repo.Migrations.CreateUserFinances do
 
       timestamps()
     end
-
   end
 end

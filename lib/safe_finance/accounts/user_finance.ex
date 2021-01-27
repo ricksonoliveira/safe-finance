@@ -1,4 +1,4 @@
-defmodule SafeFinance.Accounts.UserFinances do
+defmodule SafeFinance.Accounts.UserFinance do
   @moduledoc """
     UserFinances Schema
   """
@@ -17,8 +17,8 @@ defmodule SafeFinance.Accounts.UserFinances do
   end
 
   @doc false
-  def changeset(user_finances, attrs \\ %{}) do
-    user_finances
+  def changeset(user_finance, attrs \\ %{}) do
+    user_finance
     |> cast(attrs, [:balance, :currency])
     |> validate_required([:balance, :currency])
   end
