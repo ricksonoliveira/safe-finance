@@ -23,7 +23,7 @@ defmodule SafeFinance.Operations do
 
     # Validade are accounts ids the same
     case is_transfer_self?(from_acc_id, to_acc_id) do
-      true -> {:error, "Transaction Error: Cannot transfer to yourself."}
+      true -> {:error, "Transaction Error: Cannot transfer to the same account."}
       false -> perform_update(from_acc, to_acc_id, value)
     end
   end
