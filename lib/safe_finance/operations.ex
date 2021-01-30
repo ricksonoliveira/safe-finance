@@ -18,8 +18,8 @@ defmodule SafeFinance.Operations do
     end
 
     # Validade are accounts ids the same
-    case from_acc_id === to_acc_id do
-      true -> {:error, "Transaction Error: Cannot trasnfer to yourself."}
+    case is_transfer_self?(from_acc_id, to_acc_id)do
+      true -> {:error, "Transaction Error: Cannot transfer to yourself."}
       false -> perform_update(from_acc, to_acc_id, value)
     end
   end
@@ -27,6 +27,10 @@ defmodule SafeFinance.Operations do
   defp is_negative?(from_acc_balance, value) do
     Decimal.sub(from_acc_balance, value)
     |> Decimal.negative?()
+  end
+
+  defp is_transfer_self?(from_acc_id, to_acc_id) do
+    from_acc_id === to_acc_id
   end
 
   def perform_update(from_acc, to_acc_id, value) do
