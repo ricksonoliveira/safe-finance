@@ -8,6 +8,7 @@ defmodule SafeFinance.Operations do
   alias SafeFinance.Repo
 
   def transaction(from_acc_id, to_acc_id, value) do
+
     from_acc = Accounts.get!(from_acc_id)
     value = Decimal.new(value)
 
@@ -18,7 +19,7 @@ defmodule SafeFinance.Operations do
     end
 
     # Validade are accounts ids the same
-    case is_transfer_self?(from_acc_id, to_acc_id)do
+    case is_transfer_self?(from_acc_id, to_acc_id) do
       true -> {:error, "Transaction Error: Cannot transfer to yourself."}
       false -> perform_update(from_acc, to_acc_id, value)
     end
@@ -34,10 +35,19 @@ defmodule SafeFinance.Operations do
   end
 
   def perform_update(from_acc, to_acc_id, value) do
-    {:ok, from_acc} = perform_operation(from_acc, value, :sub)
-    {:ok, to_acc} = Accounts.get!(to_acc_id)
-    |> perform_operation(value, :sum)
-    {:ok, "Transaction was sucessfull! From: #{from_acc.id} To: #{to_acc.id} Value: #{value}"}
+    to_acc = Accounts.get!(to_acc_id)
+
+    transaction = Ecto.Multi.new()
+    |> Ecto.Multi.update(:from_account, perform_operation(from_acc, value, :sub))
+    |> Ecto.Multi.update(:to_account, perform_operation(to_acc, value, :sum))
+    |> Repo.transaction()
+
+    case transaction do
+      {:ok, _} ->
+        {:ok, "Transaction was sucessfull! From: #{from_acc.id} To: #{to_acc.id} Value: #{value}"}
+      {:error, :from_account, changeset, _} -> {:error, changeset}
+      {:error, :to_account, changeset, _} -> {:error, changeset}
+    end
 
   end
 
@@ -53,6 +63,5 @@ defmodule SafeFinance.Operations do
 
   def update_account(%UserFinance{} = from_acc, attrs) do
     UserFinance.changeset(from_acc, attrs)
-    |> Repo.update()
   end
 end
