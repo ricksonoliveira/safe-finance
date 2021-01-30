@@ -7,6 +7,9 @@ defmodule SafeFinance.Operations do
   alias SafeFinance.Accounts.UserFinance
   alias SafeFinance.Repo
 
+  @doc """
+    Responsible for accomplishing a transaction between two accounts
+  """
   def transaction(from_acc_id, to_acc_id, value) do
 
     from_acc = Accounts.get!(from_acc_id)
@@ -34,6 +37,9 @@ defmodule SafeFinance.Operations do
     from_acc_id === to_acc_id
   end
 
+  @doc """
+    Performs an update to the accounts being transfered using transaction concept
+  """
   def perform_update(from_acc, to_acc_id, value) do
     to_acc = Accounts.get!(to_acc_id)
 
@@ -51,16 +57,25 @@ defmodule SafeFinance.Operations do
 
   end
 
+  @doc """
+    Performs the operation to subtract the amount to transfer
+  """
   def perform_operation(from_acc, value, :sub) do
     from_acc
     |> update_account(%{balance: Decimal.sub(from_acc.balance, value)})
   end
 
+  @doc """
+    Performs the operation to add the quantity tranfered to account
+  """
   def perform_operation(to_acc, value, :sum) do
     to_acc
     |> update_account(%{balance: Decimal.add(to_acc.balance, value)})
   end
 
+  @doc """
+    Updates the UserFinance changeset attributes
+  """
   def update_account(%UserFinance{} = from_acc, attrs) do
     UserFinance.changeset(from_acc, attrs)
   end
