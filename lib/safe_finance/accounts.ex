@@ -18,7 +18,7 @@ defmodule SafeFinance.Accounts do
       |> Ecto.Multi.insert(:account, fn %{user: user} ->
         user
         |> Ecto.build_assoc(:user_finance)
-        |> UserFinance.changeset()
+        |> UserFinance.changeset(%{"account" => user.user_finance})
       end)
       |> Repo.transaction()
 
@@ -44,7 +44,7 @@ defmodule SafeFinance.Accounts do
   @doc """
     Returns Account by id.
   """
-  def get!(id), do: Repo.get(UserFinance, id)
+  def get(id), do: Repo.get(UserFinance, id)
 
   @doc """
     Gets a single user by id.

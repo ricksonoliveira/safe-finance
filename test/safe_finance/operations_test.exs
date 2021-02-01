@@ -5,67 +5,64 @@ defmodule SafeFinance.OperationsTest do
 
   describe "operations" do
     alias SafeFinance.Operations.Operation
+    alias SafeFinance.Accounts
 
-    @valid_attrs %{account_from: 42, account_to: 42, value: "120.5"}
-    @update_attrs %{account_from: 43, account_to: 43, value: "456.7"}
-    @invalid_attrs %{account_from: nil, account_to: nil, value: nil}
+    @from_attrs %{
+      name: "Rick",
+      email: "rick@email.com",
+      password: "123456"
+    }
+    @to_attrs %{
+      name: "Ana",
+      email: "ana@email.com",
+      password: "123456"
+    }
 
-    def operation_fixture(attrs \\ %{}) do
-      {:ok, operation} =
+    def from_acc_fixture(attrs \\ %{}) do
+      {:ok, user} =
         attrs
-        |> Enum.into(@valid_attrs)
-        |> Operations.create_operation()
+        |> Enum.into(@from_attrs)
+        |> Accounts.create_user()
 
-      operation
+      user
     end
 
-    test "list_operations/0 returns all operations" do
-      operation = operation_fixture()
-      assert Operations.list_operations() == [operation]
+    def to_acc_fixture(attrs \\ %{}) do
+      {:ok, user} =
+        attrs
+        |> Enum.into(@to_attrs)
+        |> Accounts.create_user()
+
+      user
     end
 
-    test "get_operation!/1 returns the operation with given id" do
-      operation = operation_fixture()
-      assert Operations.get_operation!(operation.id) == operation
+    def from_acc_id_fixture do
+      Accounts.get!(from_acc_fixture().id)
     end
 
-    test "create_operation/1 with valid data creates a operation" do
-      assert {:ok, %Operation{} = operation} = Operations.create_operation(@valid_attrs)
-      assert operation.account_from == 42
-      assert operation.account_to == 42
-      assert operation.value == Decimal.new("120.5")
+    def to_acc_id_fixture do
+      Accounts.get!(to_acc_fixture().id)
     end
 
-    test "create_operation/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Operations.create_operation(@invalid_attrs)
+    @from_acc_id from_acc_fixture()
+    @to_acc_id to_acc_fixture()
+    @value "20.00"
+
+    test "transaction/0 can transfer with valid params" do
+      catch_exit(Operation.transaction(@from_acc_id, @to_acc_id, @value))
     end
 
-    test "update_operation/2 with valid data updates the operation" do
-      operation = operation_fixture()
-
-      assert {:ok, %Operation{} = operation} =
-               Operations.update_operation(operation, @update_attrs)
-
-      assert operation.account_from == 43
-      assert operation.account_to == 43
-      assert operation.value == Decimal.new("456.7")
+    test "perform_update/0 can update from account and destiny account balances" do
+      assert Operation.perform_update(@from_acc_id, @to_acc_id, @value) ==
+      {:ok, "Transaction was sucessfull! From: #{@from_acc_id} To: #{@to_acc_id} Value: #{@value}"}
     end
 
-    test "update_operation/2 with invalid data returns error changeset" do
-      operation = operation_fixture()
-      assert {:error, %Ecto.Changeset{}} = Operations.update_operation(operation, @invalid_attrs)
-      assert operation == Operations.get_operation!(operation.id)
+    test "perform_operation/0 can sub value from account" do
+      catch_exit(Operation.perform_operation(@from_acc_id, @value, :sub))
     end
 
-    test "delete_operation/1 deletes the operation" do
-      operation = operation_fixture()
-      assert {:ok, %Operation{}} = Operations.delete_operation(operation)
-      assert_raise Ecto.NoResultsError, fn -> Operations.get_operation!(operation.id) end
-    end
-
-    test "change_operation/1 returns a operation changeset" do
-      operation = operation_fixture()
-      assert %Ecto.Changeset{} = Operations.change_operation(operation)
+    test "perform_operation/1 can sum value from account" do
+      catch_exit(Operation.perform_operation(@to_acc_id, @value, :sum))
     end
   end
 end

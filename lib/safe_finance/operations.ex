@@ -12,8 +12,13 @@ defmodule SafeFinance.Operations do
   """
   def transaction(from_acc_id, to_acc_id, value) do
 
-    from_acc = Accounts.get!(from_acc_id)
+    from_acc = Accounts.get(from_acc_id)
     value = Decimal.new(value)
+
+    case does_account_exists?(from_acc_id, to_acc_id) do
+      true -> {:error, "Transaction Error: Account Not Found or Does not exists!"}
+      false -> perform_update(from_acc, to_acc_id, value)
+    end
 
     # Validate is limit negative
     case is_negative?(from_acc.balance, value) do
@@ -28,20 +33,27 @@ defmodule SafeFinance.Operations do
     end
   end
 
+  # Validates if has balance
   defp is_negative?(from_acc_balance, value) do
     Decimal.sub(from_acc_balance, value)
     |> Decimal.negative?()
   end
 
+  # Checks if the transfer is to the same account
   defp is_transfer_self?(from_acc_id, to_acc_id) do
     from_acc_id === to_acc_id
+  end
+
+  # Checks is the accounts actually exists
+  defp does_account_exists?(from_acc_id, to_acc_id) do
+    !from_acc_id || !to_acc_id
   end
 
   @doc """
     Performs an update to the accounts being transfered using transaction concept
   """
   def perform_update(from_acc, to_acc_id, value) do
-    to_acc = Accounts.get!(to_acc_id)
+    to_acc = Accounts.get(to_acc_id)
 
     transaction = Ecto.Multi.new()
     |> Ecto.Multi.update(:from_account, perform_operation(from_acc, value, :sub))
@@ -54,7 +66,6 @@ defmodule SafeFinance.Operations do
       {:error, :from_account, changeset, _} -> {:error, changeset}
       {:error, :to_account, changeset, _} -> {:error, changeset}
     end
-
   end
 
   @doc """
