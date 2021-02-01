@@ -18,7 +18,7 @@ defmodule SafeFinance.Accounts do
       |> Ecto.Multi.insert(:account, fn %{user: user} ->
         user
         |> Ecto.build_assoc(:user_finance)
-        |> UserFinance.changeset(%{"account" => user.user_finance})
+        |> UserFinance.changeset(%{account: attrs})
       end)
       |> Repo.transaction()
 
@@ -26,6 +26,12 @@ defmodule SafeFinance.Accounts do
       {:ok, operations} -> {:ok, operations.user, operations.account}
       {:error, :user, changeset, _} -> {:error, changeset}
     end
+  end
+
+  def update_account(%UserFinance{} = user_finance, attrs) do
+    user_finance
+    |> User.changeset(attrs)
+    |> Repo.update()
   end
 
   @doc """

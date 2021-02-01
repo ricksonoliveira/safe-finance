@@ -9,7 +9,7 @@ defmodule SafeFinanceWeb.UserController do
   action_fallback SafeFinanceWeb.FallbackController
 
   @doc """
-    Lista todos os usuários no banco de dados
+    List all users with accounts from database
   """
   def index(conn, _) do
     conn
@@ -17,7 +17,7 @@ defmodule SafeFinanceWeb.UserController do
   end
 
   @doc """
-    Cria um usuário no banco de dados
+    Creates a user and his default account
   """
   def signup(conn, %{"user" => user}) do
     with {:ok, user, user_finance} <- Accounts.create_user(user) do
@@ -28,6 +28,9 @@ defmodule SafeFinanceWeb.UserController do
     end
   end
 
+  @doc """
+    Show a single user with account
+  """
   def show(conn, %{"id" => id}) do
     conn
     |> render("show.json", user: Accounts.get_user!(id))
