@@ -22,6 +22,7 @@ defmodule SafeFinanceWeb.Router do
     # Operations actions routes
     scope "/operations" do
       put "/transaction", OperationController, :transaction
+      put "/update/balance", OperationController, :update_balance
     end
   end
 

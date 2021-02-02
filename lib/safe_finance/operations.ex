@@ -44,7 +44,7 @@ defmodule SafeFinance.Operations do
 
   # Checks is the accounts actually exists
   defp does_account_exists?(from_acc_id, to_acc_id) do
-    !from_acc_id || !to_acc_id
+    from_acc_id == nil || to_acc_id == nil
   end
 
   @doc """
@@ -67,6 +67,21 @@ defmodule SafeFinance.Operations do
   end
 
   @doc """
+    Add balance amount to account
+  """
+  def perform_account_update(acc, value) do
+    transaction = Ecto.Multi.new()
+    |> Ecto.Multi.update(:to_account, perform_operation(acc, value, :sum))
+    |> Repo.transaction()
+
+    case transaction do
+      {:ok, _} ->
+        {:ok, "Transaction was sucessfull! Added value of: #{value} To Account: #{acc.id}"}
+      {:error, :acc_account, changeset, _} -> {:error, changeset}
+    end
+  end
+
+  @doc """
     Performs the operation to subtract the amount to transfer
   """
   def perform_operation(from_acc, value, :sub) do
@@ -85,7 +100,7 @@ defmodule SafeFinance.Operations do
   @doc """
     Updates the UserFinance changeset attributes
   """
-  def update_account(%UserFinance{} = from_acc, attrs) do
-    UserFinance.changeset(from_acc, attrs)
+  def update_account(%UserFinance{} = acc, attrs) do
+    UserFinance.changeset(acc, attrs)
   end
 end

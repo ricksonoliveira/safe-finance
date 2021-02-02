@@ -24,4 +24,20 @@ defmodule SafeFinanceWeb.OperationController do
       |> render("success.json", message: message)
     end
   end
+
+
+  @doc """
+    Updates an account balance
+  """
+  def update_balance(
+    conn,
+    %{
+      "account_id" => account_id,
+      "value" => value
+      }
+    ) do
+     Operations.perform_account_update(SafeFinance.Accounts.get(account_id), value)
+      conn
+      |> render("account_value.json", %{account_id: account_id, value: value})
+  end
 end

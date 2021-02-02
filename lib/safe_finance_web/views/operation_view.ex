@@ -6,4 +6,12 @@ defmodule SafeFinanceWeb.OperationView do
       message: message
     }
   end
+
+  def render("account_value.json", %{account_id: account_id, value: value}) do
+    %{
+      message: "Account amount updated!",
+      account_id: account_id,
+      value: value
+    }
+  end
 end
