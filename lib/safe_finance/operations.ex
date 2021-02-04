@@ -14,16 +14,17 @@ defmodule SafeFinance.Operations do
 
     from_acc = Accounts.get!(from_acc_id)
     dec_value = Decimal.new(value)
+    case_operation(from_acc, to_acc_id, dec_value)
+  end
 
-    case is_negative?(from_acc.balance, dec_value) do
-      true -> {:error, "Transaction Error: Value above your limit!"}
-      false -> perform_update(from_acc, to_acc_id, dec_value)
-    end
-
-    case is_transfer_self?(from_acc_id, to_acc_id) do
-      true -> {:error, "Transaction Error: Cannot transfer to the same account."}
-      false -> perform_update(from_acc, to_acc_id, dec_value)
-    end
+  def case_operation(from_acc, to_acc_id, value) do
+      case is_negative?(from_acc.balance, value) do
+        true -> {:error, "Transaction Error: Value above your limit!"}
+        false ->  case is_transfer_self?(from_acc.id, to_acc_id) do
+          true -> {:error, "Transaction Error: Cannot transfer to the same account."}
+          false -> perform_update(from_acc, to_acc_id, value)
+        end
+      end
   end
 
   # Validates if has balance

@@ -70,20 +70,20 @@ defmodule SafeFinance.OperationsTest do
       assert Decimal.add(account.balance, "1000.00") == Decimal.new("2000.00")
     end
 
-    @doc """
+
     test "transaction/0 should show error if tris to transfer more than account has" do
       from_acc = from_acc_fixture()
       to_acc = to_acc_fixture()
       assert from_acc.balance == 1000
       assert to_acc.balance == 1000
       negative_transaction = Operations.transaction(from_acc.id, to_acc.id, Decimal.new("1100"))
-      assert negative_transaction == {:error, "Unable to process transaction, value above your limit!"}
+      assert negative_transaction == {:error, "Transaction Error: Value above your limit!"}
     end
-    """
+
 
     test "transaction/0 should show error if tries to transfer to the same account" do
       from_acc = from_acc_fixture()
-      negative_transaction = Operations.transaction(from_acc.id, from_acc.id, Decimal.new("1100"))
+      negative_transaction = Operations.transaction(from_acc.id, from_acc.id, Decimal.new("1000"))
       assert negative_transaction == {:error, "Transaction Error: Cannot transfer to the same account."}
     end
   end
