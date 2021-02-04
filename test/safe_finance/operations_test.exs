@@ -70,7 +70,6 @@ defmodule SafeFinance.OperationsTest do
       assert Decimal.add(account.balance, "1000.00") == Decimal.new("2000.00")
     end
 
-
     test "transaction/0 should show error if tris to transfer more than account has" do
       from_acc = from_acc_fixture()
       to_acc = to_acc_fixture()
