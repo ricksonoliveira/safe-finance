@@ -75,7 +75,7 @@ Id da conta destino: `to_account_id string`
 
 Valor: `value string` , o valor será string para que não haja pontos flutuantes.
 
-Lembre-se de ultilizar o id da conta do usuário e não o id do usuário.
+Lembre-se de ultilizar o id da conta do usuário e não o id do usuário ao realizar transações.
 
 ### Exemplo de requisição:
 
