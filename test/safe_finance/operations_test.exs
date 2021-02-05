@@ -22,7 +22,7 @@ defmodule SafeFinance.OperationsTest do
       account
     end
 
-    test "transaction/0 can transfer with valid params" do
+    test "transaction/3 can transfer with valid params" do
       from_acc = from_acc_fixture()
       to_acc = to_acc_fixture()
       assert from_acc.balance == 1000
@@ -31,14 +31,14 @@ defmodule SafeFinance.OperationsTest do
         {:ok, "Transaction was sucessfull! From: #{from_acc.id} To: #{to_acc.id} Value: #{@value}"}
     end
 
-    test "perform_update/0 can update from account and destiny account balances" do
+    test "perform_update/3 can update from account and destiny account balances" do
       from_acc = from_acc_fixture()
       to_acc = to_acc_fixture()
       assert Operations.perform_update(from_acc, to_acc.id, @value) ==
       {:ok, "Transaction was sucessfull! From: #{from_acc.id} To: #{to_acc.id} Value: #{@value}"}
     end
 
-    test "update_account/0 can sub value for update" do
+    test "update_account/2 can sub value for update" do
       from_acc = from_acc_fixture()
       assert from_acc.balance === 1000
       from_acc
@@ -46,7 +46,7 @@ defmodule SafeFinance.OperationsTest do
       assert Decimal.sub(from_acc.balance, @value) == Decimal.new("980.00")
     end
 
-    test "perform_operation/0 can sub value from account" do
+    test "perform_operation/3 can sub value from account" do
       from_acc = from_acc_fixture()
       assert from_acc.balance === 1000
       from_acc
@@ -54,7 +54,7 @@ defmodule SafeFinance.OperationsTest do
       assert Decimal.sub(from_acc.balance, @value) == Decimal.new("980.00")
     end
 
-    test "perform_operation/1 can sum value from account" do
+    test "perform_operation/3 can sum value from account" do
       from_acc = from_acc_fixture()
       assert from_acc.balance === 1000
       from_acc
@@ -62,7 +62,7 @@ defmodule SafeFinance.OperationsTest do
       assert Decimal.add(from_acc.balance, @value) == Decimal.new("1020.00")
     end
 
-    test "perform_account_update/0 can perform an update on account" do
+    test "perform_account_update/2 can perform an update on account" do
       account = from_acc_fixture()
       assert account.balance === 1000
       account
@@ -70,7 +70,7 @@ defmodule SafeFinance.OperationsTest do
       assert Decimal.add(account.balance, "1000.00") == Decimal.new("2000.00")
     end
 
-    test "transaction/0 should show error if tris to transfer more than account has" do
+    test "transaction/3 should show error if tris to transfer more than account has" do
       from_acc = from_acc_fixture()
       to_acc = to_acc_fixture()
       assert from_acc.balance == 1000
@@ -80,7 +80,7 @@ defmodule SafeFinance.OperationsTest do
     end
 
 
-    test "transaction/0 should show error if tries to transfer to the same account" do
+    test "transaction/3 should show error if tries to transfer to the same account" do
       from_acc = from_acc_fixture()
       negative_transaction = Operations.transaction(from_acc.id, from_acc.id, Decimal.new("1000"))
       assert negative_transaction == {:error, "Transaction Error: Cannot transfer to the same account."}
