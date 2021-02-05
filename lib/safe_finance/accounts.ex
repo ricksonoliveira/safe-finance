@@ -28,12 +28,6 @@ defmodule SafeFinance.Accounts do
     end
   end
 
-  def update_account(%UserFinance{} = user_finance, attrs) do
-    user_finance
-    |> User.changeset(attrs)
-    |> Repo.update()
-  end
-
   @doc """
     Insert a user.
   """
