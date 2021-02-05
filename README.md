@@ -23,7 +23,7 @@ Faça isso ultilizando o seguinte endpoint:
 
 Rota: `POST api/users/signup`
 
-Body params (JSON):
+Body params (JSON)
  
 Email: `email string`
 
@@ -31,7 +31,7 @@ Nome: `name string`
 
 Senha: `password string`
 
-### Veja um exmplo:
+Realizando o request na rota acima com os parametros mencionados
 
 ```json
 {
@@ -77,7 +77,7 @@ Valor: `value string` , o valor será string para que não haja pontos flutuante
 
 Lembre-se de ultilizar o id da conta do usuário e não o id do usuário ao realizar transações.
 
-### Exemplo de requisição:
+Request
 
 ``` json
 {
@@ -87,7 +87,7 @@ Lembre-se de ultilizar o id da conta do usuário e não o id do usuário ao real
 }
 ```
 
-### Reposta: 
+Reposta
 ```json
 {
   "message": "Transaction was sucessfull! From: 3fe295cd-9fab-43fb-806f-5d7430250cbe To: 94f35f36-9a2a-418e-af26-d1bbeb1adfc9 Value: 10"
@@ -105,7 +105,7 @@ Conta a ser adicionada balance: `account_id string`
 
 Valor (balance) a ser adicionado a conta: `value string`
 
-# Testes
+### Testes
 
 * Rode os testes da aplicação ultilizando o comando `mix test`
 
