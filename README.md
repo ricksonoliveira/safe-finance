@@ -101,9 +101,9 @@ Type: `GET`
 
 ### Transaction
 
-Rota: `api/operations/transaction`
+rota: `api/operations/transaction`
 
-Type: `PUT`
+type: `PUT`
 
 **Body params (JSON)**
 
