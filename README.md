@@ -21,7 +21,7 @@ A conta deve conter um nome, email e senha*.
 
 Faça isso ultilizando o seguinte endpoint:
 
-Rota: `api/users/signup`
+Rota: `POST api/users/signup`
 
 Body params (JSON):
  
@@ -57,15 +57,15 @@ A resposta será um usuário criado e uma conta com os valores padrão como abai
   }
 }
 ```
-Note que nos headers dessa requisição, contém uma rota para `api/users/show?id={id}` onde acessando, é encontrado os dados do usuário e conta criados
+Note que nos headers dessa requisição, contém uma rota para `GET api/users/show?id={id}` onde acessando, é encontrado os dados do usuário e conta criados
 
 *Obs: O campo senha embora não exista autenticação foi apenas implementado para mostrar a segurança de senha possível por criar uma hash do mesmo campo.
 
-A medida que cria novos usuários poderá ver uma listagem de todos para consulta em: `api/users/list`
+A medida que cria novos usuários poderá ver uma listagem de todos para consulta em: `GET api/users/list`
 
 * Após criar dois usuário será possível fazer uma transferência de uma conta para outra, do seguinte modo:
 
-Rota: `api/operations/transaction`
+Rota: `PUT api/operations/transaction`
 
 Body params (JSON):
 
@@ -97,7 +97,7 @@ Note na rota de listagem (`api/users/list`), ou na rota de mostrar um usuario (`
 
 * Por fim, para inserir mais valores em uma conta ultilize a rota de atualizar a conta da seguinte forma:
 
-Rota: `/operations/update/balance`
+Rota: `PUT api/operations/update/balance`
 
 Body  params (JSON):
 
