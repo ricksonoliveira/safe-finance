@@ -6,9 +6,9 @@ SafeFinance é um microserviço para realizar transações sem pontos flutuantes
 * [Ações e Fluxo da API](https://github.com/rik471/safe-finance#a%C3%A7%C3%B5es-e-fluxo-da-api)
 * [Testes](https://github.com/rik471/safe-finance#a%C3%A7%C3%B5es-e-fluxo-da-api)
 
-## Instalação:
+## Instalação
 
-Para consumir o microserviço, é preciso ter Elixir, Phoenix e PostgreSql.
+Para ultilizar o microserviço, é preciso ter Elixir, Phoenix e PostgreSql.
 
 * Instale as dependencias com o comando `mix deps.get`
 * Crie o banco de dados e sua estrutura com `mix ecto.setup`
