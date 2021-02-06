@@ -38,6 +38,8 @@ A conta deve conter um nome, email e senha*, tendo sucesso ela recebe um id da c
 
 Depois de criado a conta você pode adicionar saldo pela rota `api/update/balance` e transferir para outra conta utilizando `api/operations/transaction`
 
+*Obs:* * *O campo senha embora não exista autenticação foi apenas implementado para mostrar a segurança de senha possível por criar uma hash do mesmo campo.*
+
 ## **Rotas**
 
 ### **Signup**
@@ -81,8 +83,6 @@ type: `POST`
 }
 ```
 
-* *Obs: O campo senha embora não exista autenticação foi apenas implementado para mostrar a segurança de senha possível por criar uma hash do mesmo campo.*
-
 ### **Show User**
 
 Note que nos *headers* da rota `signup`, em *location*,contém uma rota onde acessando é encontrado os dados do usuário e conta criada.
@@ -107,7 +107,7 @@ type: `GET`
 
 ### **List Users**
 
-A medida que cria novos usuários, poderá ver uma listagem de todos usuários existentes para consulta em:
+A medida que cria novos usuários, poderá ver uma listagem de todos usuários existentes para consulta
 
 rota: `api/users/list`
 
@@ -170,13 +170,13 @@ Lembre-se de ultilizar o id da conta do usuário e não o id do usuário ao real
   "message": "Transaction was sucessfull! From: 3fe295cd-9fab-43fb-806f-5d7430250cbe To: 94f35f36-9a2a-418e-af26-d1bbeb1adfc9 Value: 10"
 }
 ```
-Note na rota de listagem (`api/users/list`), ou na rota de mostrar um usuario (`api/users/show?id={id}`) que o valor foi abatido da conta de origem e acrescentado na conta de destino.
+Note que na rota de listagem (`api/users/list`), ou na rota de mostrar um usuario (`api/users/show?id={id}`), que o valor foi abatido da conta de origem e acrescentado na conta de destino.
 
 ### **Update Balance**
 
-Rota: `api/operations/update/balance`
+rota: `api/operations/update/balance`
 
-Type: `PUT`
+type: `PUT`
 
 **Request  params (JSON)**
 
