@@ -94,15 +94,15 @@ type: `GET`
 **Response**
 ```json
 {
-  "id": "3fe295cd-9fab-43fb-806f-5d7430250cbe",
-  "balance": 1000,
-  "currency": "BRL",
-  "user": {
-    "email": "rick@mail.com",
-    "id": "8d1da1d5-8276-4934-92b1-772c0545c574",
-    "name": "Rick",
-    "password_hash": "$argon2id$v=19$m=131072,t=8,p=4$WiIHo8c0Oio+clvObXflxQ$yhpHKQ+mO8qbcY1FBP1i4YWThWK1ZUA8ewscyYWe1zo"
-  }
+  "accounts": {
+    "balance": "1000.00",
+    "currency": "BRL",
+    "id": "04af967a-b7b8-4d28-8514-f652ea827e6e"
+  },
+  "email": "ana@mail.com",
+  "id": "e84c183b-65d2-4424-a1e5-d565fea3ad5b",
+  "name": "Ana",
+  "password_hash": "$argon2id$v=19$m=131072,t=8,p=4$zmu5w1IgA7x3ciWzKLdqyA$Nk+Yj554CYa4mfoqEmEcki69rH/Dw0/Js8FEdsNws1c"
 }
 ```
 
@@ -118,27 +118,27 @@ type: `GET`
 ```json
 [
   {
-    "id": "3fe295cd-9fab-43fb-806f-5d7430250cbe",
-    "balance": 1000,
-    "currency": "BRL",
-    "user": {
-      "email": "rick@mail.com",
-      "id": "8d1da1d5-8276-4934-92b1-772c0545c574",
-      "name": "Rick",
-      "password_hash": "$argon2id$v=19$m=131072,t=8,p=4$WiIHo8c0Oio+clvObXflxQ$yhpHKQ+mO8qbcY1FBP1i4YWThWK1ZUA8ewscyYWe1zo"
-    }
+    "accounts": {
+      "balance": "1000.00",
+      "currency": "BRL",
+      "id": "8e0a577e-3699-4d14-9d1b-7caf08ed7c81"
+    },
+    "email": "rick@gmail.com",
+    "id": "16536828-f534-4d4d-b084-4e3b01253635",
+    "name": "Rick",
+    "password_hash": "$argon2id$v=19$m=131072,t=8,p=4$W+GxfWd9UL/OHI3IBatr4w$D921smF9JdO2F0pXHoq86gRoh3f1FR1YX+c4mv8es1M"
   },
   {
-    "id": "94f35f36-9a2a-418e-af26-d1bbeb1adfc9",
-    "balance": 1000,
-    "currency": "BRL",
-    "user": {
-      "email": "ana@mail.com",
-      "id": "54f35f36-6a2a-419e-af32-d2ksa1dffk8",
-      "name": "Ana",
-      "password_hash": "$argon2id$v=19$m=131072,t=8,p=4$WiIHo8c0Oio+clvObXflxQ$yhpHKQ+mO8qbcY1FBP1i4YWThWK1ZUA8ewscyYWe1zo"
-    }
-  },
+    "accounts": {
+      "balance": "1000.00",
+      "currency": "BRL",
+      "id": "91f14f59-05e2-468d-89f0-16170f8bab9e"
+    },
+    "email": "ana@mail.com",
+    "id": "4e3ae188-267a-41ef-b50c-e3933eb83011",
+    "name": "Ana",
+    "password_hash": "$argon2id$v=19$m=131072,t=8,p=4$MZVU7w/Uf437dsmNB8l6tQ$pMQdlbe8suuPcwFtf+l636WJUJt/U3ZEXiIeYmV9dYY"
+  }
 ]
 ```
 ### **Transaction**
