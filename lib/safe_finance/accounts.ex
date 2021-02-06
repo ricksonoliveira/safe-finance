@@ -44,7 +44,7 @@ defmodule SafeFinance.Accounts do
   @doc """
     Returns Account by id.
   """
-  def get!(id), do: Repo.get!(UserFinance, id)
+  def get(id), do: Repo.get(UserFinance, id)
 
   @doc """
     Gets a single user by id.

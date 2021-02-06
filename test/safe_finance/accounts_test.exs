@@ -41,14 +41,14 @@ defmodule SafeFinance.AccountsTest do
     end
 
 
-    test "get!/1 returns the user with given id" do
+    test "get/1 returns the user with given id" do
       user = user_fixture()
         |> Repo.preload(:user_finance)
-      assert Accounts.get!(user.user_finance.id).id == user.user_finance.id
+      assert Accounts.get(user.user_finance.id).id == user.user_finance.id
     end
 
     test "create_user/1 with valid data creates a user" do
-      assert {:ok, %User{} = user, user_finance} = Accounts.create_user(@valid_attrs)
+      assert {:ok, %User{} = user, _user_finance} = Accounts.create_user(@valid_attrs)
       assert user.email == "rick@mail.com"
       assert user.name == "Rick"
       assert user.password == "123456"

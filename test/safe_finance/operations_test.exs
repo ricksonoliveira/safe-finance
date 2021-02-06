@@ -85,5 +85,23 @@ defmodule SafeFinance.OperationsTest do
       negative_transaction = Operations.transaction(from_acc.id, from_acc.id, Decimal.new("1000"))
       assert negative_transaction == {:error, "Transaction Error: Cannot transfer to the same account."}
     end
+
+    test "account_does_not_exists/3 show error if origin account does not exists" do
+      from_acc = nil
+      assert from_acc == nil
+      to_acc = to_acc_fixture()
+      dec_value = Decimal.new(@value)
+      assert Operations.account_does_not_exists(from_acc, to_acc, dec_value)
+        == {:error, "Transaction Error: Origin account does not exists!"}
+    end
+
+    test "account_does_not_exists/3 show error if destiny account does not exists" do
+      from_acc = from_acc_fixture()
+      to_acc = nil
+      assert to_acc == nil
+      dec_value = Decimal.new(@value)
+      assert Operations.account_does_not_exists(from_acc, to_acc, dec_value)
+        == {:error, "Transaction Error: Destiny account does not exists!"}
+    end
   end
 end

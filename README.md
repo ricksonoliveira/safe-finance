@@ -147,7 +147,7 @@ rota: `api/operations/transaction`
 
 type: `PUT`
 
-**Body params (JSON)**
+**Body Params (JSON)**
 
 * Id da conta origem: `from_account_id string`
 
@@ -181,7 +181,7 @@ rota: `api/operations/update/balance`
 
 type: `PUT`
 
-**Request  params (JSON)**
+**Request  Params (JSON)**
 
 * Conta a ser adicionada balance: `account_id string`
 

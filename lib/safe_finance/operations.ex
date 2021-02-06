@@ -11,20 +11,31 @@ defmodule SafeFinance.Operations do
     Responsible for performing a transaction between two accounts
   """
   def transaction(from_acc_id, to_acc_id, value) do
-
-    from_acc = Accounts.get!(from_acc_id)
+    from_acc = Accounts.get(from_acc_id)
     dec_value = Decimal.new(value)
-    case_operation(from_acc, to_acc_id, dec_value)
+    to_acc = Accounts.get(to_acc_id)
+
+    account_does_not_exists(from_acc, to_acc, dec_value)
   end
 
   def case_operation(from_acc, to_acc_id, value) do
-      case is_negative?(from_acc.balance, value) do
-        true -> {:error, "Transaction Error: Value above your limit!"}
-        false ->  case is_transfer_self?(from_acc.id, to_acc_id) do
-          true -> {:error, "Transaction Error: Cannot transfer to the same account."}
-          false -> perform_update(from_acc, to_acc_id, value)
-        end
+    case is_negative?(from_acc.balance, value) do
+      true -> {:error, "Transaction Error: Value above your limit!"}
+      false ->  case is_transfer_self?(from_acc.id, to_acc_id) do
+        true -> {:error, "Transaction Error: Cannot transfer to the same account."}
+        false -> perform_update(from_acc, to_acc_id, value)
       end
+    end
+  end
+
+  def account_does_not_exists(from_acc, to_acc, dec_value) do
+     cond do
+       !from_acc ->
+         {:error, "Transaction Error: Origin account does not exists!"}
+       !to_acc ->
+         {:error, "Transaction Error: Destiny account does not exists!"}
+        true -> case_operation(from_acc, to_acc.id, dec_value)
+     end
   end
 
   # Validates if has balance
@@ -42,7 +53,7 @@ defmodule SafeFinance.Operations do
     Performs an update to the accounts being transfered using transaction concept
   """
   def perform_update(from_acc, to_acc_id, value) do
-    to_acc = Accounts.get!(to_acc_id)
+    to_acc = Accounts.get(to_acc_id)
 
     transaction = Ecto.Multi.new()
     |> Ecto.Multi.update(:from_account, perform_operation(from_acc, value, :sub))
