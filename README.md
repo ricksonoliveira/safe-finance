@@ -13,7 +13,7 @@ SafeFinance é um microserviço para realizar transações sem pontos flutuantes
   * [Transaction](https://github.com/rik471/safe-finance#transaction)
   * [Update Balance](https://github.com/rik471/safe-finance#update-balance)
 
-## Instalação
+## **Instalação**
 
 Para ultilizar o microserviço, é preciso ter [Elixir](https://elixir-lang.org/install.html), [Phoenix](https://hexdocs.pm/phoenix/installation.html) e [PostgreSql](https://www.postgresql.org/).
 
@@ -25,22 +25,22 @@ Para acessar as rotas visite [`localhost:4000`](http://localhost:4000)`/api` do 
 
 Agora você está pronto! :smile:
 
-## Testes
+## **Testes**
 
 * Rode os testes da aplicação ultilizando o comando `mix test`
 
 * Ultilize o comando `MIX_ENV=test mix coveralls` para rodar os testes mostrando a cobertura dos testes no código.
 
-## Ações e Fluxo da API
+## **Ações e Fluxo da API**
 
-Primeiramente, para ultilização a API é necessário criar dois usuários para realizar transfêrencias, uma para conta origem e outra para conta destino. 
+Primeiramente, para ultilização da API é necessário criar dois usuários para realizar transfêrencias, uma para conta origem e outra para conta destino. 
 A conta deve conter um nome, email e senha*, tendo sucesso ela recebe um id da conta que pode ser ultilizado para realizar transações.
 
 Depois de criado a conta você pode adicionar saldo pela rota `api/update/balance` e transferir para outra conta utilizando `api/operations/transaction`
 
-## Rotas
+## **Rotas**
 
-### Signup
+### **Signup**
 
 rota: `api/users/signup`
 
@@ -81,25 +81,64 @@ type: `POST`
 }
 ```
 
-*Obs: O campo senha embora não exista autenticação foi apenas implementado para mostrar a segurança de senha possível por criar uma hash do mesmo campo.
+* *Obs: O campo senha embora não exista autenticação foi apenas implementado para mostrar a segurança de senha possível por criar uma hash do mesmo campo.*
 
-### Show User
+### **Show User**
 
-Note que nos *headers* da rota `signup`, em *location* contém uma rota onde acessando, é encontrado os dados do usuário e conta criada 
+Note que nos *headers* da rota `signup`, em *location*,contém uma rota onde acessando é encontrado os dados do usuário e conta criada.
 
-rota: `api/users/show?id={id}` 
+rota: `api/users/show?id={id}`
 
 type: `GET`
 
-### List Users
+**Response**
+```json
+{
+  "balance": 1000,
+  "currency": "BRL",
+  "user": {
+    "email": "rick@mail.com",
+    "id": "8d1da1d5-8276-4934-92b1-772c0545c574",
+    "name": "Rick",
+    "password_hash": "$argon2id$v=19$m=131072,t=8,p=4$WiIHo8c0Oio+clvObXflxQ$yhpHKQ+mO8qbcY1FBP1i4YWThWK1ZUA8ewscyYWe1zo"
+  }
+}
+```
 
-A medida que cria novos usuários poderá ver uma listagem de todos para consulta em:
+### **List Users**
 
-Rota: `api/users/list`
+A medida que cria novos usuários, poderá ver uma listagem de todos usuários existentes para consulta em:
 
-Type: `GET`
+rota: `api/users/list`
 
-### Transaction
+type: `GET`
+
+**Response**
+```json
+[
+  {
+    "balance": 1000,
+    "currency": "BRL",
+    "user": {
+      "email": "rick@mail.com",
+      "id": "8d1da1d5-8276-4934-92b1-772c0545c574",
+      "name": "Rick",
+      "password_hash": "$argon2id$v=19$m=131072,t=8,p=4$WiIHo8c0Oio+clvObXflxQ$yhpHKQ+mO8qbcY1FBP1i4YWThWK1ZUA8ewscyYWe1zo"
+    }
+  },
+  {
+    "balance": 1000,
+    "currency": "BRL",
+    "user": {
+      "email": "ana@mail.com",
+      "id": "94f35f36-9a2a-418e-af26-d1bbeb1adfc9",
+      "name": "Ana",
+      "password_hash": "$argon2id$v=19$m=131072,t=8,p=4$WiIHo8c0Oio+clvObXflxQ$yhpHKQ+mO8qbcY1FBP1i4YWThWK1ZUA8ewscyYWe1zo"
+    }
+  },
+]
+```
+### **Transaction**
 
 rota: `api/operations/transaction`
 
@@ -133,7 +172,7 @@ Lembre-se de ultilizar o id da conta do usuário e não o id do usuário ao real
 ```
 Note na rota de listagem (`api/users/list`), ou na rota de mostrar um usuario (`api/users/show?id={id}`) que o valor foi abatido da conta de origem e acrescentado na conta de destino.
 
-### Update Balance
+### **Update Balance**
 
 Rota: `api/operations/update/balance`
 
