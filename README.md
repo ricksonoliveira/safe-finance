@@ -94,6 +94,7 @@ type: `GET`
 **Response**
 ```json
 {
+  "id": "3fe295cd-9fab-43fb-806f-5d7430250cbe",
   "balance": 1000,
   "currency": "BRL",
   "user": {
@@ -117,6 +118,7 @@ type: `GET`
 ```json
 [
   {
+    "id": "3fe295cd-9fab-43fb-806f-5d7430250cbe",
     "balance": 1000,
     "currency": "BRL",
     "user": {
@@ -127,11 +129,12 @@ type: `GET`
     }
   },
   {
+    "id": "94f35f36-9a2a-418e-af26-d1bbeb1adfc9",
     "balance": 1000,
     "currency": "BRL",
     "user": {
       "email": "ana@mail.com",
-      "id": "94f35f36-9a2a-418e-af26-d1bbeb1adfc9",
+      "id": "54f35f36-6a2a-419e-af32-d2ksa1dffk8",
       "name": "Ana",
       "password_hash": "$argon2id$v=19$m=131072,t=8,p=4$WiIHo8c0Oio+clvObXflxQ$yhpHKQ+mO8qbcY1FBP1i4YWThWK1ZUA8ewscyYWe1zo"
     }
